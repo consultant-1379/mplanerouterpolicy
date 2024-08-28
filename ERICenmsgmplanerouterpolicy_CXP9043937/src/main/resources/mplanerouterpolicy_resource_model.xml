@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configEntity xmlns="http://www.ericsson.com/oss/itpf/deployment/dst/descriptor">
+    <description>mplanerouterpolicy</description>
+    <singleton>false</singleton>
+    <scaleUnit>
+        <loadDrivers>
+            <loadDriver name="numberORadioNE" description="Number of Network Elements managed by ENM is defined in msmplane service group"></loadDriver>
+        </loadDrivers>
+        <minimumUnit>
+            <profile>
+                <cpuCores>2</cpuCores>
+                <cpuMinutes>0</cpuMinutes>
+                <peakCpuMinutes>0</peakCpuMinutes>
+                <memory>5120</memory>
+            </profile>
+            <profileConversionFormulae>
+                <cpuCores></cpuCores>
+                <cpuMinutes></cpuMinutes>
+                <peakCpuMinutes></peakCpuMinutes>
+                <memory></memory>
+            </profileConversionFormulae>
+        </minimumUnit>
+        <optimalUnit>
+            <profile>
+                <cpuCores>2</cpuCores>
+                <cpuMinutes>0</cpuMinutes>
+                <peakCpuMinutes>0</peakCpuMinutes>
+                <memory>5120</memory>
+            </profile>
+            <profileConversionFormulae>
+                <cpuCores>()</cpuCores>
+                <cpuMinutes>()</cpuMinutes>
+                <peakCpuMinutes>()</peakCpuMinutes>
+                <memory>()</memory>
+            </profileConversionFormulae>
+        </optimalUnit>
+    </scaleUnit>
+    <parameters>
+        <property name="averageSizeOfMplaneMessage" defaultValue="50" description="Average notification messages size added to the MPlaneConnectionListenerQueue"/>
+        <property name="mplaneMediationUnavailabilityDurationInMinutes" defaultValue="2" description="The average length of time the message needs to survive in the queue if the consumer becomes unavailable"/>
+        <property name="mplaneNodeRestartPerMinute" defaultValue="2" description="This is the rate at which the ORU node restarts"/>
+    </parameters>
+    <deploymentDependencies>
+        <deploymentDependency>
+            <groupId>com.ericsson.oss.servicegroupcontainers</groupId>
+            <artifactId>jmsserver</artifactId>
+            <version></version>
+            <alias>MediationRouterListenerQueue</alias>
+            <qualifier>GLOBAL</qualifier>
+            <loadDriverConverters>
+                <loadConversionFormula dependencyLoadDriver="jmsDestinationName">MPlaneConnectionListenerQueue</loadConversionFormula>
+                <loadConversionFormula dependencyLoadDriver="jmsDestinationType">Queue</loadConversionFormula>
+                <loadConversionFormula dependencyLoadDriver="jmsDestinationSizeBytes">(numberORadioNE * mplaneNodeRestartPerMinute * mplaneMediationUnavailabilityDurationInMinutes * averageSizeOfMplaneMessage)</loadConversionFormula>
+            </loadDriverConverters>
+        </deploymentDependency>
+    </deploymentDependencies>
+</configEntity>

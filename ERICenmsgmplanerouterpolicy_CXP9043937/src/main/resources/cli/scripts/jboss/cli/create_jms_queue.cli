@@ -1,0 +1,6 @@
+#Addition of MPlaneConnectionListenerQueue into standalone
+echo "Configuring MPlaneConnectionListenerQueue in standalone"
+if (outcome == success) of /subsystem=messaging-activemq/server=default/jms-queue=MPlaneConnectionListenerQueue:add(entries=[queue/MPlaneConnectionListenerQueue-amq java:jboss/exported/jms/queue/MPlaneConnectionListenerQueue-amq])
+end-if
+if (outcome == success) of /subsystem=messaging-activemq/server=default/jms-queue=MplaneAlarmSupervisionQueue:add(entries=[queue/MplaneAlarmSupervisionQueue-amq java:jboss/exported/jms/queue/MplaneAlarmSupervisionQueue-amq])
+end-if
